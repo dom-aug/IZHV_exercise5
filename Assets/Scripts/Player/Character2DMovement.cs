@@ -212,6 +212,17 @@ public class Character2DMovement : MonoBehaviour
 	     *   * Persistent heading flag: *mHeadingRight*
 	     *   * Rotating a local rotation by an axis: localRotation *= Quaternion.Euler(...)
 	     */
+
+		if (mInput.move.x < 0f && mHeadingRight)
+		{
+			mHeadingRight = false;
+			transform.localRotation *= Quaternion.Euler(0, 180, 0);
+		}
+		else if (mInput.move.x > 0f && !mHeadingRight)
+		{
+			mHeadingRight = true;
+			transform.localRotation *= Quaternion.Euler(0, 180, 0);
+		}
 	    
 	    var animator = mSelector.charAnimator;
 	    if (animator != null)
@@ -228,7 +239,7 @@ public class Character2DMovement : MonoBehaviour
 			var falling = !mController.isGrounded && mFallTimeoutDelta <= 0.0f;
 
 			/*
-			 * Task #1a: Passing properties to the Animator
+			 * Task #1b: Passing properties to the Animator
 			 * 
 			 * After rotating the character, he should now be able to look in the
 			 * correct direction, based on the movement. However, more detailed
@@ -265,6 +276,13 @@ public class Character2DMovement : MonoBehaviour
 			 *   * Current Animator instance: *animator*
 			 *   * Animator methods: *SetFloat* and *SetBool*
 			 */
+			
+			animator.SetFloat("Speed", speed);
+			animator.SetFloat("MoveSpeed", moveSpeed);
+			animator.SetBool("Crouch", crouch);
+			animator.SetBool("Grounded", grounded);
+			animator.SetBool("Jump", jump);
+			animator.SetBool("Fall", falling);
 	    }
     }
 }
